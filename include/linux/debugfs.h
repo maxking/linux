@@ -153,6 +153,10 @@ ssize_t debugfs_read_file_bool(struct file *file, char __user *user_buf,
 ssize_t debugfs_write_file_bool(struct file *file, const char __user *user_buf,
 				size_t count, loff_t *ppos);
 
+int add_dbfs_proc_entry(struct task_struct *);
+
+int remove_dbfs_proc_entry(struct task_struct *);
+
 #else
 
 #include <linux/err.h>

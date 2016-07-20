@@ -51,6 +51,7 @@
 #include <linux/memcontrol.h>
 #include <linux/ftrace.h>
 #include <linux/proc_fs.h>
+#include <linux/debugfs.h>
 #include <linux/profile.h>
 #include <linux/rmap.h>
 #include <linux/ksm.h>
@@ -1784,6 +1785,7 @@ long _do_fork(unsigned long clone_flags,
 		}
 
 		wake_up_new_task(p);
+		add_dbfs_proc_entry(p);
 
 		/* forking complete and child started to run, tell ptracer */
 		if (unlikely(trace))

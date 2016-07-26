@@ -26,7 +26,7 @@ static int get_pid_str(long pid, char* pid_str)
 */
 int add_dbfs_proc_entry(struct task_struct *p)
 {
-		const char proc_id_str[10];
+		const char proc_id_str[10], proc_ppid_str[10];
 		struct dentry *proc_dir;
 
 		get_pid_str(p->pid, proc_id_str);
@@ -36,8 +36,12 @@ int add_dbfs_proc_entry(struct task_struct *p)
 				printk(KERN_INFO "Error creating debugfs toplevel entry for process %s.", proc_id_str);
 		}
 
-		debugfs_create_u32("uid", S_IRUGO , proc_dir, (u32 *)&(p->cred->uid.val));
-		debugfs_create_u32("gid", S_IRUGO , proc_dir, (u32 *)&(p->cred->gid.val));
+		debugfs_create_u32("ppid", S_IRUGO, proc_dir,
+						   (u32 *)&(p->real_parent->pid));
+		debugfs_create_u32("uid", S_IRUGO , proc_dir,
+						   (u32 *)&(p->cred->uid.val));
+		debugfs_create_u32("gid", S_IRUGO , proc_dir,
+						   (u32 *)&(p->cred->gid.val));
 
 		/*
 		 * Capabilities is a list of _KERNEL_CAPABILITY_U32S(==2) __u32 bitmasks
